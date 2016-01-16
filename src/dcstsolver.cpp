@@ -27,7 +27,7 @@ DCSTSolver::DCSTSolver() {
     // create variable
     SCIP_VAR* var;
     std::ostringstream varname;
-    varname << "x" << couter;
+    varname << "x" << counter;
     // SCIP_VARTYPE_INTEGER vs SCIP_VARTYPE_CONTINUOUS
     SCIP_CALL_EXC(SCIPcreateVar(scip, &var, varname.str().c_str(), 0.0, 1.0, edge.cost(), SCIP_VARTYPE_INTEGER, TRUE, FALSE, NULL, NULL, NULL, NULL, NULL));
 
