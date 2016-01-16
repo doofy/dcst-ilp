@@ -45,7 +45,7 @@ DCSTSolver::DCSTSolver() {
   SCIP_CALL_EXC(SCIPcreateConsLinear(scip, &cons, ...));
 
   // add constraints
-  SCIP_CALL_EXC(SCIPaddConsLinear(scip, cons);
+  SCIP_CALL_EXC(SCIPaddConsLinear(scip, cons));
 }
 
 DCSTSolver::~DCSTSolver() {
