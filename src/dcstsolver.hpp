@@ -1,6 +1,8 @@
 #ifndef DCSTSOLVER_H
 #define DCSTSOLVER_H
 
+#include "graph.hpp"
+
 #include <scip/scip.h>
 #include <scip/scipdefplugins.h>
 
@@ -9,7 +11,7 @@ class DCSTSolver {
     SCIP* scip;
 
   public:
-    DCSTSolver();
+    DCSTSolver(Graph&);
     ~DCSTSolver();
     void solve(void);
 };

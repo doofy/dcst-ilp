@@ -1,14 +1,19 @@
 #ifndef DCSTLOADER_H
 #define DCSTLOADER_H
 
-#include <vector>
+#include "graph.hpp"
+
+#include <string>
+
+#include <scip/scip.h>
 
 class DCSTLoader {
   private:
-    std::vector<int> edges;
+    SCIP *scip;
+    SCIP_CONS *cons;
 
   public:
-    DCSTLoader();
+    DCSTLoader(std::string, Graph&);
     ~DCSTLoader();
 };
 #endif

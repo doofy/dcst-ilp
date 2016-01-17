@@ -1,7 +1,13 @@
 #include "dcstsolver.hpp"
+#include "edge.hpp"
+#include "node.hpp"
+#include "graph.hpp"
 #include "scip_exception.hpp"
 
-DCSTSolver::DCSTSolver() {
+#include <vector>
+#include <sstream>
+
+DCSTSolver::DCSTSolver(Graph& graph) {
   // initialize scip
   SCIP_CALL_EXC(SCIPcreate(&scip));
 
@@ -23,34 +29,48 @@ DCSTSolver::DCSTSolver() {
   // build variables
   int counter = 0;
   // TODO think about saving references to each var in their corresponding edge object
-  for (Edge edge = edges.begin(); edge != edges.end(); edge++) {
+  std::vector<Edge> &edges = graph.edges;
+  for (std::vector<Edge>::iterator edge = edges.begin(); edge != edges.end(); edge++) {
     // create variable
     SCIP_VAR* var;
     std::ostringstream varname;
     varname << "x" << counter;
-    // SCIP_VARTYPE_INTEGER vs SCIP_VARTYPE_CONTINUOUS
-    SCIP_CALL_EXC(SCIPcreateVar(scip, &var, varname.str().c_str(), 0.0, 1.0, edge.cost(), SCIP_VARTYPE_INTEGER, TRUE, FALSE, NULL, NULL, NULL, NULL, NULL));
+    // TODO we should probably use SCIPcreateVarBasic here
+/*
+    SCIP_CALL_EXC(SCIPcreateVar(scip, // problem instance
+          &var, // reference
+          varname.str().c_str(), // name
+          0.0, 1.0, // upper and lower bounds
+          edge->cost, // TODO ?objective function value TODO?
+          SCIP_VARTYPE_INTEGER, // SCIP_VARTYPE_INTEGER vs SCIP_VARTYPE_CONTINUOUS
+          TRUE, // TODO ?should var's column be present in the initial root LP?
+          FALSE, // TODO ?is var's column removable from the LP (due to aging or cleanup)?
+          NULL,
+          NULL,
+          NULL,
+          NULL,
+          NULL)); // user data for this specific variable, or NULL
 
     // add variable
     SCIP_CALL_EXC(SCIPaddVar(scip, var));
-
+*/
     counter++;
   }
 
   // add pricers
-  SCIP_CALL_EXC(SCIPactivatePricer(scip, ...));
+  // TODO do we need pricing?
+  //SCIP_CALL_EXC(SCIPactivatePricer(scip, ...));
 
   // create constraints
-  SCIP_CONS * cons;
-  SCIP_CALL_EXC(SCIPcreateConsLinear(scip, &cons, ...));
+  //SCIP_CALL_EXC(SCIPcreateConsLinear(scip, &cons, ...));
 
   // add constraints
-  SCIP_CALL_EXC(SCIPaddConsLinear(scip, cons));
+  //SCIP_CALL_EXC(SCIPaddConsLinear(scip, cons));
 }
 
 DCSTSolver::~DCSTSolver() {
-  SCIPreleaseCons()
-    SCIPreleaseVar()
+  //SCIPreleaseCons();
+  //SCIPreleaseVar();
 }
 
 void DCSTSolver::solve() {
