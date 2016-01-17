@@ -35,6 +35,7 @@ DCSTLoader::DCSTLoader(std::string filename, Graph& graph) {
       Edge newedge(from, to, cost, partOfSolution);
       graph.edges.push_back(newedge);
     }
+    std::cerr << "loading instance " << name << " successful" << std::endl;
   }
   else {
     std::cerr << "file not good" << std::endl;

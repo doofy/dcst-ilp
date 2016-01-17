@@ -6,6 +6,9 @@
 
 #include <vector>
 #include <sstream>
+#include <iostream>
+
+#include <scip/scipdefplugins.h>
 
 DCSTSolver::DCSTSolver(Graph& graph) {
   // initialize scip
@@ -15,7 +18,7 @@ DCSTSolver::DCSTSolver(Graph& graph) {
   SCIP_CALL_EXC(SCIPsetRealParam(scip, "limits/time", 300));
 
   // load default plugins linke separators, heuristics, etc.
-  //SCIP_CALL_EXC(SCIPincludeDefaultPlugins(scip));
+  SCIP_CALL_EXC(SCIPincludeDefaultPlugins(scip));
 
   // disable scip output to stdout
   //SCIP_CALL_EXC(SCIPsetMessagehdlr(scip, NULL));
@@ -36,24 +39,17 @@ DCSTSolver::DCSTSolver(Graph& graph) {
     std::ostringstream varname;
     varname << "x" << counter;
     // TODO we should probably use SCIPcreateVarBasic here
-/*
-    SCIP_CALL_EXC(SCIPcreateVar(scip, // problem instance
+    SCIP_CALL_EXC(SCIPcreateVarBasic(scip, // problem instance
           &var, // reference
           varname.str().c_str(), // name
           0.0, 1.0, // upper and lower bounds
           edge->cost, // TODO ?objective function value TODO?
-          SCIP_VARTYPE_INTEGER, // SCIP_VARTYPE_INTEGER vs SCIP_VARTYPE_CONTINUOUS
-          TRUE, // TODO ?should var's column be present in the initial root LP?
-          FALSE, // TODO ?is var's column removable from the LP (due to aging or cleanup)?
-          NULL,
-          NULL,
-          NULL,
-          NULL,
-          NULL)); // user data for this specific variable, or NULL
+          SCIP_VARTYPE_INTEGER)); // SCIP_VARTYPE_INTEGER vs SCIP_VARTYPE_CONTINUOUS
+
+    edge->var = var;
 
     // add variable
     SCIP_CALL_EXC(SCIPaddVar(scip, var));
-*/
     counter++;
   }
 
@@ -77,3 +73,28 @@ void DCSTSolver::solve() {
   SCIP_CALL_EXC(SCIPsolve(scip));
 }
 
+void DCSTSolver::display(Graph& graph) {
+  // get the best found solution from scip
+  SCIP_SOL *solution = SCIPgetBestSol(scip);
+
+  // when SCIP did not succeed then sol is NULL
+  if (solution == NULL) {
+    std::cerr << "no solution found" << std::endl;
+    return;
+  }
+/*
+  std::vector<Edge> &edges = graph.edges;
+  for (std::vector<Edge>::iterator edge = edges.begin(); edge != edges.end(); edge++) {
+    if (SCIPgetSolVal(scip, solution, edge->var) > 0.5 ) {
+      edge->partOfSolution = 1;
+    }
+    else {
+      edge->partOfSolution = 0;
+    }
+  }
+*/
+  std::vector<Edge> &edges = graph.edges;
+  for (std::vector<Edge>::iterator edge = edges.begin(); edge != edges.end(); edge++) {
+    edge->partOfSolution = SCIPgetSolVal(scip, solution, edge->var);
+  }
+}

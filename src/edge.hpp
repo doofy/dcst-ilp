@@ -1,6 +1,8 @@
 #ifndef EDGE_H
 #define EDGE_H
 
+#include <scip/scip.h>
+
 class Edge {
   private:
 
@@ -10,6 +12,7 @@ class Edge {
     int from;
     int to;
     int cost;
-    int partOfSolution;
+    float partOfSolution;
+    SCIP_VAR* var;
 };
 #endif

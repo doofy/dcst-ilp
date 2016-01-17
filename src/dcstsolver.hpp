@@ -4,7 +4,7 @@
 #include "graph.hpp"
 
 #include <scip/scip.h>
-#include <scip/scipdefplugins.h>
+//#include <scip/scipdefplugins.h>
 
 class DCSTSolver {
   private:
@@ -14,5 +14,6 @@ class DCSTSolver {
     DCSTSolver(Graph&);
     ~DCSTSolver();
     void solve(void);
+    void display(Graph&);
 };
 #endif

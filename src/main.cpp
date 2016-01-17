@@ -18,10 +18,10 @@ int main (int argc, char** argv) {
   Graph graph;
   try {
     DCSTLoader loader(path, graph);
+    DCSTSolver solver(graph);
+    solver.solve();
+    solver.display(graph);
     std::cout << graph.toString() << std::endl;
-    //DCSTSolver solver(graph);
-    //solver.solve();
-    //solver.disp();
   } catch(const SCIPException& exc) {
     std::cerr << exc.what() << std::endl;
     exit((int) exc.getRetcode());
