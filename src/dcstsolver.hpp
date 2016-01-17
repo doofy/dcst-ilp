@@ -15,5 +15,6 @@ class DCSTSolver {
     ~DCSTSolver();
     void solve(void);
     void display(Graph&);
+    SCIP_RETCODE prepare(Graph&);
 };
 #endif

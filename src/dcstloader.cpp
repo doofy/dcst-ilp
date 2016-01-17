@@ -32,6 +32,8 @@ DCSTLoader::DCSTLoader(std::string filename, Graph& graph) {
       file >> to;
       file >> cost;
       file >> partOfSolution;
+      graph.nodes[from].edges.push_back(i);
+      graph.nodes[to].edges.push_back(i);
       Edge newedge(from, to, cost, partOfSolution);
       graph.edges.push_back(newedge);
     }

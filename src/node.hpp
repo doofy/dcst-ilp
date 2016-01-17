@@ -1,6 +1,10 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "edge.hpp"
+
+#include <vector>
+
 class Node {
   private:
 
@@ -8,5 +12,6 @@ class Node {
     Node(int);
     ~Node();
     int degree;
+    std::vector<int> edges;
 };
 #endif
