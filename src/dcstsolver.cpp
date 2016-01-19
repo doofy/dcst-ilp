@@ -3,6 +3,7 @@
 #include "node.hpp"
 #include "graph.hpp"
 #include "scip_exception.hpp"
+#include "DCUTConstraintHandler.hpp"
 
 #include <vector>
 #include <sstream>
@@ -38,6 +39,9 @@ SCIP_RETCODE DCSTSolver::prepare(Graph& graph) {
 
   // set the objective sense to minimize
   SCIP_CALL_EXC(SCIPsetObjsense(scip, SCIP_OBJSENSE_MINIMIZE));
+
+  // add own constraint handler
+  SCIP_CALL(SCIPincludeObjConshdlr(scip, new DCUTConstraintHandler(scip), TRUE));
 
   // build variables
   counter = 0;

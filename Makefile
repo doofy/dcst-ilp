@@ -6,6 +6,9 @@ scip:
 	cd scipoptsuite-3.2.0
 	make
 
+src/DCUTConstraintHandler.o: src/DCUTConstraintHandler.cpp
+	g++ -Iscipoptsuite-3.2.0/scip-3.2.0/src -Wall -g -c src/DCUTConstraintHandler.cpp -o src/DCUTConstraintHandler.o
+
 src/edge.o: src/edge.cpp
 	g++ -Iscipoptsuite-3.2.0/scip-3.2.0/src -Wall -g -c src/edge.cpp -o src/edge.o
 src/node.o: src/node.cpp
@@ -22,11 +25,11 @@ src/dcstloader.o: src/dcstloader.cpp src/dcstloader.hpp
 src/main.o: src/main.cpp
 	g++ -Iscipoptsuite-3.2.0/scip-3.2.0/src -Wall -g -c src/main.cpp -o src/main.o
 
-dcstsolver: src/dcstsolver.o src/main.o src/dcstloader.o src/edge.o src/node.o src/graph.o
+dcstsolver: src/dcstsolver.o src/main.o src/dcstloader.o src/edge.o src/node.o src/graph.o src/DCUTConstraintHandler.o
 	g++ \
 	  -Wall \
 	  -g \
-	  src/main.o src/dcstsolver.o src/dcstloader.o src/edge.o src/node.o src/graph.o \
+	  src/main.o src/dcstsolver.o src/dcstloader.o src/edge.o src/node.o src/graph.o src/DCUTConstraintHandler.o\
 	  -Lscipoptsuite-3.2.0/scip-3.2.0/lib \
 	  -lscip.linux.x86_64.gnu.opt \
 	  -lobjscip.linux.x86_64.gnu.opt \
@@ -49,3 +52,4 @@ clean:
 	rm -rf src/dcstsolver.o
 	rm -rf src/dcstloader.o
 	rm -rf src/main.o
+	rm -rf src/DCUTConstraintHandler.o
